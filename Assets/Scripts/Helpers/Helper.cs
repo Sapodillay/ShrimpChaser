@@ -13,6 +13,9 @@ public class Helper
     /// <returns>The closest object to the centre</returns>
     public static MonoBehaviour GetClosestGameObject<T>(List<T> objects, Vector2 centre) where T : MonoBehaviour
     {
+        if(objects.Count == 0) return null;
+        if (objects.Count == 1) return objects[0];
+
         T closest = objects[0];
         float distance = Vector2.Distance(closest.gameObject.transform.position, centre);
 
