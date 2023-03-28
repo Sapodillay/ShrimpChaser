@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,6 +44,14 @@ public class Interactable : MonoBehaviour
     }
 
 
+    public virtual void onInteraction()
+    {
+        throw new NotImplementedException();
+    }
 
-
+    internal void Recylce()
+    {
+        Destroy(gameObject);
+    }
 }
+

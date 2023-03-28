@@ -33,6 +33,14 @@ public class InputHandler : MonoBehaviour
         float _x = Input.GetAxisRaw("Horizontal");
         float _y = Input.GetAxisRaw("Vertical");
         _movementVector = new Vector2(_x, _y).normalized;
+
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            InteractionHandler.instance.onInteraction();
+        }
+
+
     }
 
     public Vector2 GetMovementVector()

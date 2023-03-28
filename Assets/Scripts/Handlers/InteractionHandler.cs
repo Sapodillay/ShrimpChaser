@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -59,8 +60,6 @@ public class InteractionHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //only allow triggers
-        Debug.Log(collision.gameObject.name);
         if (!collision.gameObject.TryGetComponent<Interactable>(out Interactable interactable)) return;
         interactablesInRange.Add(interactable);
     }
@@ -78,7 +77,10 @@ public class InteractionHandler : MonoBehaviour
 
     }
 
-
+    internal void onInteraction()
+    {
+        closestInteractable.onInteraction();
+    }
 
 
 
@@ -86,10 +88,4 @@ public class InteractionHandler : MonoBehaviour
     {
         instance = this;
     }
-
-
-
-
-
-
 }
