@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InteractionHandler : MonoBehaviour
@@ -33,9 +34,17 @@ public class InteractionHandler : MonoBehaviour
         if (interactablesInRange.Count == 0) return;
 
         //Pure cast
-        closestInteractable = (Interactable)Helper.GetClosestGameObject(interactablesInRange, gameObject.transform.position);
-        if (closestInteractable == null ) return;
-        Debug.DrawLine(gameObject.transform.position, closestInteractable.transform.position);
+        Interactable newClosestinteract = (Interactable)Helper.GetClosestGameObject(interactablesInRange, gameObject.transform.position);
+        if (closestInteractable == newClosestinteract) return;
+
+        //Change back to white.
+        if (closestInteractable!= null)
+        {
+            closestInteractable.ChangeColor(Color.white);
+        }
+
+        closestInteractable = newClosestinteract;
+        newClosestinteract.ChangeColor(Color.red);
     }
 
 
@@ -48,19 +57,25 @@ public class InteractionHandler : MonoBehaviour
         return (Interactable)Helper.GetClosestGameObject(interactablesInRange, gameObject.transform.position);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         //only allow triggers
-        if (!collision.collider.isTrigger) return;
+        Debug.Log(collision.gameObject.name);
         if (!collision.gameObject.TryGetComponent<Interactable>(out Interactable interactable)) return;
         interactablesInRange.Add(interactable);
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         //only allow triggers
-        if (!collision.collider.isTrigger) return;
         if (!collision.gameObject.TryGetComponent<Interactable>(out Interactable interactable)) return;
         interactablesInRange.Remove(interactable);
+        if (interactable == closestInteractable)
+        {
+            closestInteractable = null;
+            interactable.ChangeColor(Color.white);
+
+        }
+
     }
 
 

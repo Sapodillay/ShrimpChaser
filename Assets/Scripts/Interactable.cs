@@ -2,12 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
+
 public class Interactable : MonoBehaviour
 {
 
     [SerializeField] Collider2D _interactionCollider;
 
+
+    static readonly int shPropColor = Shader.PropertyToID("_Color");
+
+    MaterialPropertyBlock _materialPropertyBlock;
+    public MaterialPropertyBlock materialPropertyBlock
+    {
+        get
+        {
+            if (_materialPropertyBlock == null)
+                _materialPropertyBlock = new MaterialPropertyBlock();
+            return _materialPropertyBlock;
+        }
+    }
 
 
 
@@ -19,6 +32,17 @@ public class Interactable : MonoBehaviour
     {
         InteractionHandler.instance.interactables.Remove(this);
     }
+
+
+    public void ChangeColor(Color color)
+    {
+        SpriteRenderer rnd;
+        if (!TryGetComponent<SpriteRenderer>(out rnd)) return;
+        materialPropertyBlock.SetColor(shPropColor, color);
+        rnd.SetPropertyBlock(materialPropertyBlock);
+    }
+
+
 
 
 }
